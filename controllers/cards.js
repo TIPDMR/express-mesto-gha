@@ -3,7 +3,6 @@ const { errorHandler } = require('../utils/utils');
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
-    .orFail()
     .then((cards) => res.send({ cards }))
     .catch((err) => errorHandler(err, res));
 };
