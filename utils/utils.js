@@ -11,7 +11,7 @@ module.exports.errorHandler = (err, res) => {
       res.status(400).send({ message: err.message });
       break;
     case DocumentNotFoundError:
-      res.status(404).send({ message: err.message });
+      res.status(404).send({ message: [] });
       break;
     default:
       res.status(500).send({ message: err.message });
