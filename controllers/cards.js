@@ -22,7 +22,6 @@ module.exports.deleteCard = (req, res) => {
   const _id = req.params.cardId;
   console.log(_id);
   Card.findByIdAndDelete({ _id })
-    .orFail()
     .then((cards) => res.send({ cards }))
     .catch((err) => errorHandler(err, res));
 };
