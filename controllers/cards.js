@@ -2,8 +2,7 @@ const Card = require('../models/card');
 const { errorHandler } = require('../utils/utils');
 
 module.exports.getAllCards = (req, res) => {
-  Card.find()
-    .orFail()
+  Card.find({})
     .then((cards) => res.send({ cards }))
     .catch((err) => errorHandler(err, res));
 };
