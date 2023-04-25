@@ -29,7 +29,7 @@ module.exports.updateProfileUser = (req, res) => {
   const { name, about } = req.body;
   const { _id } = req.user;
 
-  User.findByIdAndUpdate(_id, { name, about },{ new: true, runValidators: true })
+  User.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send({ user }))
     .catch((err) => errorHandler(err, res));
 };
@@ -38,7 +38,7 @@ module.exports.updateAvatarUser = (req, res) => {
   const { avatar } = req.body;
   const { _id } = req.user;
 
-  User.findByIdAndUpdate(_id, { avatar },{ new: true, runValidators: true })
+  User.findByIdAndUpdate(_id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send({ user }))
     .catch((err) => errorHandler(err, res));
 };
