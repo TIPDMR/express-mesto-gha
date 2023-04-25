@@ -2,8 +2,7 @@ const User = require('../models/user');
 const { errorHandler } = require('../utils/utils');
 
 module.exports.getUser = (req, res) => {
-  const { _id } = req.user;
-
+  const _id = req.params.userId;
   User.findById({ _id })
     .orFail()
     .then((user) => res.send({ user }))
