@@ -13,7 +13,7 @@ module.exports.createCard = (req, res) => {
 
   Card.create({ name, link, owner: _id })
     .then((card) => card.populate('owner'))
-    .then((card) => res.send({ card }))
+    .then((card) => res.status(201).send({ card }))
     .catch((err) => errorHandler(err, res));
 };
 
@@ -30,7 +30,7 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: _id } },
-    { new: true, runValidators: true },
+    { new: true },
   ).orFail()
     .populate('likes')
     .then((cards) => res.send({ cards }))
@@ -42,7 +42,7 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: _id } },
-    { new: true, runValidators: true },
+    { new: true },
   ).orFail()
     .then((cards) => res.send({ cards }))
     .catch((err) => errorHandler(err, res));

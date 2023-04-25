@@ -11,7 +11,6 @@ module.exports.getUser = (req, res) => {
 
 module.exports.getAllUsers = (req, res) => {
   User.find({})
-    .orFail()
     .then((user) => res.send({ user }))
     .catch((err) => errorHandler(err, res));
 };

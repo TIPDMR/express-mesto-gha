@@ -17,7 +17,14 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     required: [true, 'Аватар не может быть пустым'],
+    validate: {
+      validator: (value) => {
+        const urlRegex = /^(http|https):\/\/[^ "]+$/;
+        return urlRegex.test(value);
+      },
+      message: (props) => `Ссылка '${props.value}' некорректна`,
+    },
   },
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('user', userSchema);
