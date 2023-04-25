@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
+const pageNotFound = require('./routes/pageNotFound');
 
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 
 app.use('/users', users);
 app.use('/cards', cards);
+app.use('*', pageNotFound);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true, useUnifiedTopology: true,

@@ -20,6 +20,7 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   const _id = req.params.cardId;
+  console.log(_id);
   Card.deleteOne({ _id })
     .orFail()
     .then((cards) => res.send({ cards }))
