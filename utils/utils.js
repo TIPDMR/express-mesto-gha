@@ -1,8 +1,6 @@
 const { ValidationError, CastError, DocumentNotFoundError } = require('mongoose').Error;
 
 module.exports.errorHandler = (err, res) => {
-  console.log(err.name);
-  console.log(err.message);
   switch (err.constructor) {
     case ValidationError: {
       const errors = Object.values(err.errors).map((error) => error.message);
