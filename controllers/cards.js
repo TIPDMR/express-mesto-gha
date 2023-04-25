@@ -19,9 +19,7 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  console.log('Delete Card');
   const _id = req.params.cardId;
-  console.log(_id);
   Card.deleteOne({ _id })
     .orFail()
     .then((cards) => res.send({ cards }))
@@ -34,6 +32,7 @@ module.exports.likeCard = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: _id } },
     { new: true },
+    { runValidators: true }
   ).orFail()
     .populate('likes')
     .then((cards) => res.send({ cards }))
@@ -46,6 +45,7 @@ module.exports.dislikeCard = (req, res) => {
     req.params.cardId,
     { $pull: { likes: _id } },
     { new: true },
+    { runValidators: true }
   ).orFail()
     .then((cards) => res.send({ cards }))
     .catch((err) => errorHandler(err, res));
