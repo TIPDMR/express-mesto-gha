@@ -17,12 +17,12 @@ const { checkAuthorizedUser } = require('./middlewares/auth');
  */
 require('dotenv').config();
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, MONGO_DB_URI = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 /**
  * Подключение к базе данных
  */
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+mongoose.connect(MONGO_DB_URI, {
   useNewUrlParser: true, useUnifiedTopology: true,
 });
 
