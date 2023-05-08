@@ -2,7 +2,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-const NotFound = require('../errors/NotFound');
+const Unauthorized = require('../errors/Unauthorized');
+const { URI_REGEX } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -40,11 +41,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
-      validator: (v) => {
-        validator.isURL(v);
-      },
+      validator: (value) => URI_REGEX.test(value),
       message: (props) => `Ссылка '${props.value}' некорректна`,
     },
+
   },
 }, { versionKey: false });
 
@@ -53,13 +53,13 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
     .select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new NotFound('Неправильные почта или пароль'));
+        return Promise.reject(new Unauthorized('Неправильные почта или пароль'));
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new NotFound('Неправильные почта или пароль'));
+            return Promise.reject(new Unauthorized('Неправильные почта или пароль'));
           }
 
           return user;
