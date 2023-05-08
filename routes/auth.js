@@ -5,7 +5,7 @@ const {
   login,
   createUser,
 } = require('../controllers/users');
-const {URI_REGEX} = require("../utils/constants");
+const { URI_REGEX } = require('../utils/constants');
 
 router.post('/signin', celebrate({
   body: Joi.object({
