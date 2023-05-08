@@ -1,5 +1,6 @@
 const Card = require('../models/card');
 const { errorHandler } = require('../utils/utils');
+const Forbidden = require('../errors/Forbidden');
 
 module.exports.getAllCards = (req, res, next) => {
   Card.find({})
@@ -9,20 +10,27 @@ module.exports.getAllCards = (req, res, next) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-  const { _id } = req.user;
+  const userId = req.user._id;
 
-  Card.create({ name, link, owner: _id })
+  Card.create({ name, link, owner: userId })
     .then((card) => card.populate('owner'))
     .then((card) => res.status(201).send({ card }))
     .catch((err) => errorHandler(err, res, next));
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  const _id = req.params.cardId;
-  Card.findOneAndDelete({ _id, owner: req.user._id })
+  const { cardId } = req.params;
+  const userId = req.user._id;
+  const deleteCard = (_id) => Card.findOneAndDelete(_id);
+
+  Card.findById({ _id: cardId })
     .orFail()
     .then((card) => {
-      res.send({ card });
+      if (card.owner._id.valueOf() !== userId) {
+        return next(new Forbidden('Доступ запрещен'));
+      }
+      return deleteCard(card._id)
+        .then((delCard) => res.send(delCard));
     })
     .catch((err) => errorHandler(err, res, next));
 };
