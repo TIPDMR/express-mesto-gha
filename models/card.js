@@ -1,5 +1,6 @@
 // models/user.js
 const mongoose = require('mongoose');
+const {URI_REGEX} = require("../utils/constants");
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -13,8 +14,7 @@ const cardSchema = new mongoose.Schema({
     required: [true, 'Ссылка карточки не может быть пустой'],
     validate: {
       validator: (value) => {
-        const urlRegex = /^(http|https):\/\/[^ "]+$/;
-        return urlRegex.test(value);
+        return URI_REGEX.test(value);
       },
       message: (props) => `Ссылка '${props.value}' некорректна`,
     },

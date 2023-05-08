@@ -5,6 +5,7 @@ const {
   login,
   createUser,
 } = require('../controllers/users');
+const {URI_REGEX} = require("../utils/constants");
 
 router.post('/signin', celebrate({
   body: Joi.object({
@@ -19,7 +20,7 @@ router.post('/signup', celebrate({
     password: Joi.string().min(2).max(30).required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2).pattern(/^(http|https):\/\/[^ "]+$/),
+    avatar: Joi.string().min(2).pattern(URI_REGEX),
   }),
 }), createUser);
 
