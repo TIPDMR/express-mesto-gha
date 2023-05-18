@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const celebrateErrors = require('celebrate').errors;
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
@@ -33,6 +34,11 @@ mongoose.connect(MONGO_DB_URI, {
 const app = express();
 
 /**
+ * Подключаем логгер запросов
+ */
+app.use(requestLogger);
+
+/**
  * Разные middleware
  */
 app.use(helmet());
@@ -48,6 +54,11 @@ app.use('/', auth);
 app.use('/users', checkAuthorizedUser, users);
 app.use('/cards', checkAuthorizedUser, cards);
 app.use('*', pageNotFound);
+
+/**
+ * Подключаем логгер ошибок
+ */
+app.use(errorLogger);
 
 /**
  * Middleware Celebrate
