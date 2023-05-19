@@ -11,6 +11,7 @@ const cards = require('./routes/cards');
 const auth = require('./routes/auth');
 const pageNotFound = require('./routes/pageNotFound');
 const handleGeneralError = require('./middlewares/handleGeneralError');
+const corsFilters = require('./middlewares/cors');
 const { checkAuthorizedUser } = require('./middlewares/auth');
 
 /**
@@ -45,6 +46,11 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+/**
+ * CORS
+ */
+app.use(corsFilters);
 
 /**
  * Роуты приложения
